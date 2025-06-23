@@ -1,0 +1,39 @@
+# Node modules (installed packages)
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# TypeScript compiled output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.*  # in case you use .env.dev, .env.local etc.
+
+# Debugger configurations
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage and test reports
+coverage/
+nyc_output/
+test-results/
+
