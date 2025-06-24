@@ -33,3 +33,21 @@ export async function generateCalender(req: RequestNew, res: Response) {
     });
   }
 }
+
+export async function GetCalender(req: RequestNew, res: Response) {
+  const userId = req.userId;
+  try {
+    const calendar = await ContentPlan.findOne({ user: userId });
+    const posts = calendar?.posts;
+    const platform = calendar?.platform;
+    res.status(200).json({
+      posts: posts,
+      platform: platform,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "something went wrong",
+    });
+  }
+}
