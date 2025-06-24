@@ -6,4 +6,6 @@ const route = Router();
 
 route.post("/generate", authMiddleware as any, generateCalender as any);
 
+route.get("/");
+
 export default route;
