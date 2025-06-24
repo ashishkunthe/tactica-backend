@@ -38,11 +38,40 @@ export async function GetCalender(req: RequestNew, res: Response) {
   const userId = req.userId;
   try {
     const calendar = await ContentPlan.findOne({ user: userId });
-    const posts = calendar?.posts;
-    const platform = calendar?.platform;
+
     res.status(200).json({
-      posts: posts,
-      platform: platform,
+      _id: calendar?._id,
+      posts: calendar?.posts,
+      platform: calendar?.platform,
+      tone: calendar?.tone,
+      brandName: calendar?.brandName,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "something went wrong",
+    });
+  }
+}
+
+export async function DeleteCalender(req: RequestNew, res: Response) {
+  const userId = req.userId;
+  const planId = req.params.planId;
+
+  try {
+    const removedCalender = await ContentPlan.findOneAndDelete({
+      _id: planId,
+      user: userId,
+    });
+
+    if (!removedCalender) {
+      return res
+        .status(404)
+        .json({ message: "No calendar found with this ID" });
+    }
+
+    return res.status(200).json({
+      message: "the content deleted sucessfully",
     });
   } catch (error) {
     console.log(error);
