@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { GenerateContent } from "./Aifunctions";
 import ContentPlan from "../models/contentPlan";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface RequestNew extends Request {
   userId: string;

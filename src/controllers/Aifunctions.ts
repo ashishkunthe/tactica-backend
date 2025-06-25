@@ -1,11 +1,11 @@
-// @ts-ignore
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
+import dotenv from "dotenv";
 
-const config = new Configuration({
+dotenv.config();
+
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(config);
 
 interface Props {
   brandName: string;
@@ -21,38 +21,37 @@ export async function GenerateContent({
   targetAudience,
 }: Props) {
   const prompt = `
-  You are a professional content strategist.
-  
-  Generate a 30-day social media content calendar for a brand called "${brandName}" targeting "${targetAudience}" on "${platform}" with a "${tone}" tone.
-  
-  For each day (1 to 30), return:
-  - A content idea
-  - A caption
-  - 3 to 5 relevant hashtags
-  
-  Format your response in strict JSON as an array of 30 items like this:
-  [
-    {
-      "day": 1,
-      "idea": "Sample idea",
-      "caption": "Sample caption...",
-      "hashtags": ["#tag1", "#tag2"]
-    },
-    ...
-  ]
-  `;
+You are a professional content strategist.
+
+Generate a 30-day social media content calendar for a brand called "${brandName}" targeting "${targetAudience}" on "${platform}" with a "${tone}" tone.
+
+For each day (1 to 30), return:
+- A content idea
+- A caption
+- 3 to 5 relevant hashtags
+
+Format your response in strict JSON as an array of 30 items like this:
+[
+  {
+    "day": 1,
+    "idea": "Sample idea",
+    "caption": "Sample caption...",
+    "hashtags": ["#tag1", "#tag2"]
+  },
+  ...
+]
+`;
 
   try {
-    const response = await openai.createChatCompletion({
-      model: "gpt-4",
+    const chatCompletion = await openai.chat.completions.create({
       messages: [
         { role: "system", content: "You are an expert content generator." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.7,
+      model: "gpt-4",
     });
 
-    const raw = response.data.choices[0].message?.content;
+    const raw = chatCompletion.choices[0].message?.content;
     if (!raw) throw new Error("No response from OpenAI");
 
     const posts = JSON.parse(raw);
