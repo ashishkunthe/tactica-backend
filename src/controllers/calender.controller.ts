@@ -25,6 +25,7 @@ export async function generateCalender(req: RequestNew, res: Response) {
       platform: platform,
       tone: tone,
       posts: response,
+      targetAudience: targetAudience,
     });
     res.status(200).json({
       message: "the content plan has generated",
